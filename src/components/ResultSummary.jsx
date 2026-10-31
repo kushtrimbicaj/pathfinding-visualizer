@@ -1,13 +1,23 @@
 /**
- * One-line summary of the last run. Phase 6 replaces this with the
- * side-by-side comparison panel.
+ * One-line status for the current run. Phase 6 adds the side-by-side
+ * comparison panel next to it.
  */
-export default function ResultSummary({ run }) {
-  if (!run) {
+export default function ResultSummary({ run, status, progress }) {
+  if (!run || status === 'idle') {
     return <p className="result result--idle">Pick an algorithm and press Visualize.</p>;
   }
 
   const { algorithm, result } = run;
+
+  if (status === 'running') {
+    const tracing = progress?.phase === 'path';
+    return (
+      <p className="result result--running" role="status" aria-live="off">
+        <strong>{algorithm.shortName}</strong>:{' '}
+        {tracing ? 'tracing path' : 'searching'}… visited <b>{progress?.visited ?? 0}</b> cells
+      </p>
+    );
+  }
 
   if (!result.found) {
     return (

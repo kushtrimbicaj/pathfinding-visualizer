@@ -1,6 +1,14 @@
 import { ALGORITHMS } from '../algorithms/index.js';
 
-export default function RunControls({ algorithmId, onAlgorithmChange, onVisualize, onClearPath, disabled }) {
+export default function RunControls({
+  algorithmId,
+  onAlgorithmChange,
+  onVisualize,
+  onClearPath,
+  onSkip,
+  onStop,
+  running,
+}) {
   return (
     <div className="run-controls">
       <label className="field">
@@ -9,7 +17,7 @@ export default function RunControls({ algorithmId, onAlgorithmChange, onVisualiz
           className="select"
           value={algorithmId}
           onChange={(e) => onAlgorithmChange(e.target.value)}
-          disabled={disabled}
+          disabled={running}
         >
           {ALGORITHMS.map((a) => (
             <option key={a.id} value={a.id}>
@@ -18,12 +26,26 @@ export default function RunControls({ algorithmId, onAlgorithmChange, onVisualiz
           ))}
         </select>
       </label>
-      <button type="button" className="btn btn--primary" onClick={onVisualize} disabled={disabled}>
-        Visualize
-      </button>
-      <button type="button" className="btn" onClick={onClearPath} disabled={disabled}>
-        Clear path
-      </button>
+
+      {running ? (
+        <>
+          <button type="button" className="btn btn--primary" onClick={onSkip}>
+            Skip to end
+          </button>
+          <button type="button" className="btn" onClick={onStop}>
+            Stop
+          </button>
+        </>
+      ) : (
+        <>
+          <button type="button" className="btn btn--primary" onClick={onVisualize}>
+            Visualize
+          </button>
+          <button type="button" className="btn" onClick={onClearPath}>
+            Clear path
+          </button>
+        </>
+      )}
     </div>
   );
 }

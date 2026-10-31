@@ -2,7 +2,7 @@
 
 An interactive grid where you draw walls and weighted cells, then watch **Breadth-First Search** and **Dijkstra's algorithm** find a path between two points, step by step.
 
-> 🚧 In progress. Phase 4 of 6 is complete (BFS and Dijkstra).
+> 🚧 In progress. Phase 5 of 6 is complete (step-by-step animation).
 
 ## Controls
 
@@ -11,6 +11,9 @@ An interactive grid where you draw walls and weighted cells, then watch **Breadt
 - **Hold Shift** while drawing to place weights with any brush selected.
 - **Drag the green and red squares** to move the start and destination.
 - **Clear walls / Clear weights / Clear board** reset parts of the grid.
+- **Visualize** plays the search step by step. Editing is locked while it runs.
+- **Speed** (Slow, Medium, Fast, Instant) can be changed mid-run.
+- **Skip to end** finishes immediately. **Stop** or **Esc** cancels.
 
 ## Why weighted cells?
 
@@ -70,7 +73,10 @@ tests/          unit tests
 - **O(1) queue for BFS.** An array with a head index instead of `Array.shift()`, which re-indexes the whole array on every call and makes BFS quadratic.
 - **Hand-written binary min-heap** for Dijkstra, with lazy deletion instead of decrease-key: when a cell's distance improves, a new entry is pushed and the stale one is skipped when popped. Ties break by insertion order, so the search is deterministic and expands like BFS on unweighted grids.
 - **Tested against a reference solver.** Dijkstra's cost is checked on 200 seeded random grids against a slow but obviously correct Bellman-Ford-style solver, along with checks that it never costs more than BFS and BFS never takes more steps.
-- **Visualization outside React.** Visited and path colours are CSS classes toggled directly on cell elements, so showing a result never re-renders the ~1,000 cells.
+- **Compute first, then animate.** The algorithm runs to completion instantly and returns the visit order. The animator then replays it. The algorithms stay pure and testable, and the stats are known before playback starts.
+- **Animation outside React.** The animator (`src/animation/animator.js`) is framework-free. It adds CSS classes directly to cell elements, so animating 800 cells causes zero React re-renders of the grid.
+- **Time-based playback.** Speeds are in cells per second, not "ms per cell". Each `requestAnimationFrame` reveals however many cells are due by now. Playback looks the same at 60 Hz and 144 Hz, can reveal several cells per frame, and re-anchors its clock when the speed changes so there's no jump.
+- **Tested with a fake clock.** The scheduler and DOM-marking function are injected, so the animator's tests drive frames with exact timestamps, including frame-rate independence, mid-run speed changes, skip and cancel.
 - **Pure editing logic.** Brush rules (draw vs erase, walls replacing weights, protecting start/end) live in `src/grid/editing.js` and are unit-tested without a browser.
 
 ## Roadmap
@@ -79,5 +85,5 @@ tests/          unit tests
 2. ✅ Wall and weight drawing, start/end dragging, clear actions
 3. ✅ BFS and path reconstruction
 4. ✅ Binary min-heap and Dijkstra
-5. ⬜ Step-by-step animation with adjustable speed
+5. ✅ Step-by-step animation with adjustable speed
 6. ⬜ Algorithm comparison stats, maze generation, deploy

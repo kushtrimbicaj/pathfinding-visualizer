@@ -157,6 +157,17 @@ body {
   border-radius: 12px;
 }
 
+.panel__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+}
+
+.result--running strong {
+  color: var(--accent);
+}
+
 .run-controls {
   display: flex;
   flex-wrap: wrap;
@@ -324,6 +335,54 @@ kbd {
 .cell--weight.cell--path {
   background-color: #e0a800;
   background-image: radial-gradient(circle, rgb(0 0 0 / 0.45) 22%, transparent 25%);
+}
+
+/* Reveal animations. Each cell animates once, when the animator adds its class. */
+.grid .cell--visited {
+  animation: visit 450ms ease-out;
+}
+
+.grid .cell--path {
+  animation: trace 400ms ease-out;
+}
+
+/* Animations override normal rules in the cascade, so explicitly keep
+   start and end from flashing when they are marked visited/path. */
+.grid .cell--start.cell--visited,
+.grid .cell--start.cell--path,
+.grid .cell--end.cell--visited,
+.grid .cell--end.cell--path {
+  animation: none;
+}
+
+@keyframes visit {
+  0% {
+    transform: scale(0.3);
+    border-radius: 50%;
+    background-color: #7c3aed;
+  }
+  50% {
+    background-color: #2563eb;
+  }
+  75% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    border-radius: 0;
+  }
+}
+
+@keyframes trace {
+  0% {
+    transform: scale(0.6);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* Declared after visited/path so start and end always keep their colours. */
