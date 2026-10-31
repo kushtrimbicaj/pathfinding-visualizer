@@ -1,4 +1,5 @@
 import { bfs } from './bfs.js';
+import { dijkstra } from './dijkstra.js';
 
 /**
  * Registry of available algorithms. The UI builds its picker from this list,
@@ -12,6 +13,14 @@ export const ALGORITHMS = [
     weighted: false,
     guarantee: 'Fewest steps (ignores weights)',
     run: bfs,
+  },
+  {
+    id: 'dijkstra',
+    name: "Dijkstra's Algorithm",
+    shortName: 'Dijkstra',
+    weighted: true,
+    guarantee: 'Lowest total cost',
+    run: dijkstra,
   },
 ];
 

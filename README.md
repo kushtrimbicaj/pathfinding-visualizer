@@ -2,7 +2,7 @@
 
 An interactive grid where you draw walls and weighted cells, then watch **Breadth-First Search** and **Dijkstra's algorithm** find a path between two points, step by step.
 
-> 🚧 In progress. Phase 3 of 6 is complete (BFS).
+> 🚧 In progress. Phase 4 of 6 is complete (BFS and Dijkstra).
 
 ## Controls
 
@@ -18,6 +18,19 @@ On a grid where every move costs the same, BFS and Dijkstra find paths of equal 
 
 - **BFS** finds the path with the **fewest steps** and ignores cost.
 - **Dijkstra** finds the path with the **lowest total cost**, which may take more steps.
+
+Example: put 14 weights on the direct route. BFS walks straight through them (26 steps, cost 82). Dijkstra steps up one row and goes around (28 steps, cost 28).
+
+## Algorithms
+
+| | BFS | Dijkstra |
+|---|---|---|
+| Guarantees | Fewest steps | Lowest total cost |
+| Uses weights | No | Yes |
+| Frontier | FIFO queue | Binary min-heap |
+| Time | O(V + E) | O((V + E) log V) |
+
+Moving into a cell costs that cell's weight (1 normally, 5 for weighted cells). The start cell isn't counted.
 
 ## Tech stack
 
@@ -55,6 +68,8 @@ tests/          unit tests
 - **Gap-free strokes.** Pointer events fire at a limited rate, so a fast drag can skip cells. Bresenham's line algorithm fills in every cell between two events.
 - **One result shape for every algorithm.** Each algorithm is a pure function `(grid, start, end) → { found, visitedInOrder, path, steps, cost }`. The renderer and stats never need to know which algorithm ran.
 - **O(1) queue for BFS.** An array with a head index instead of `Array.shift()`, which re-indexes the whole array on every call and makes BFS quadratic.
+- **Hand-written binary min-heap** for Dijkstra, with lazy deletion instead of decrease-key: when a cell's distance improves, a new entry is pushed and the stale one is skipped when popped. Ties break by insertion order, so the search is deterministic and expands like BFS on unweighted grids.
+- **Tested against a reference solver.** Dijkstra's cost is checked on 200 seeded random grids against a slow but obviously correct Bellman-Ford-style solver, along with checks that it never costs more than BFS and BFS never takes more steps.
 - **Visualization outside React.** Visited and path colours are CSS classes toggled directly on cell elements, so showing a result never re-renders the ~1,000 cells.
 - **Pure editing logic.** Brush rules (draw vs erase, walls replacing weights, protecting start/end) live in `src/grid/editing.js` and are unit-tested without a browser.
 
@@ -63,6 +78,6 @@ tests/          unit tests
 1. ✅ Grid model and rendering
 2. ✅ Wall and weight drawing, start/end dragging, clear actions
 3. ✅ BFS and path reconstruction
-4. ⬜ Binary min-heap and Dijkstra
+4. ✅ Binary min-heap and Dijkstra
 5. ⬜ Step-by-step animation with adjustable speed
 6. ⬜ Algorithm comparison stats, maze generation, deploy
