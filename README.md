@@ -2,8 +2,6 @@
 
 An interactive grid where you draw walls and weighted cells, then watch **Breadth-First Search** and **Dijkstra's algorithm** search for a path, step by step, and compare how they did.
 
-**Live demo:** _add your Vercel URL here_
-
 ![Pathfinding Visualizer: Dijkstra detours around weighted cells that BFS walks straight through](docs/screenshot.png)
 
 _Dijkstra (yellow) takes 8 extra steps through the lower gap to avoid the weighted cells. BFS (outlined) only counts steps, so it walks straight through them: cost 46 vs 34._
