@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react';
 import { createGrid } from '../grid/createGrid.js';
+import { clearWalls, clearWeights } from '../grid/gridUtils.js';
 import { DEFAULT_COLS, DEFAULT_END, DEFAULT_ROWS, DEFAULT_START } from '../grid/constants.js';
 
 /**
  * Owns the board: the grid of cells plus the start and end positions.
- * Editing actions (walls, weights, dragging) are added in Phase 2.
  */
 export function useGrid(rows = DEFAULT_ROWS, cols = DEFAULT_COLS) {
   const [grid, setGrid] = useState(() => createGrid(rows, cols));
@@ -17,5 +17,18 @@ export function useGrid(rows = DEFAULT_ROWS, cols = DEFAULT_COLS) {
     setEnd(DEFAULT_END);
   }, [rows, cols]);
 
-  return { grid, setGrid, start, setStart, end, setEnd, resetBoard };
+  const removeWalls = useCallback(() => setGrid(clearWalls), []);
+  const removeWeights = useCallback(() => setGrid(clearWeights), []);
+
+  return {
+    grid,
+    setGrid,
+    start,
+    setStart,
+    end,
+    setEnd,
+    resetBoard,
+    removeWalls,
+    removeWeights,
+  };
 }

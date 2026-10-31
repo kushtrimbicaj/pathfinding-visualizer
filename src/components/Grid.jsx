@@ -21,13 +21,20 @@ const GridRow = memo(function GridRow({ cells, startCol, endCol }) {
   );
 });
 
-export default function Grid({ grid, start, end }) {
+/**
+ * @param {object} props
+ * @param {object} props.handlers  pointer handlers from useMouseDrawing
+ * @param {boolean} props.locked   true while an algorithm is animating
+ */
+export default function Grid({ grid, start, end, handlers, locked = false }) {
   return (
     <div
-      className="grid"
+      className={`grid${locked ? ' grid--locked' : ''}`}
       role="grid"
       aria-label="Pathfinding grid"
+      aria-disabled={locked || undefined}
       style={{ '--cols': colCount(grid) }}
+      {...handlers}
     >
       {grid.map((cells, row) => (
         <GridRow
