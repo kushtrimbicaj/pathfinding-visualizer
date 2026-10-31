@@ -1,0 +1,184 @@
+:root {
+  --bg: #0b1120;
+  --surface: #111a2e;
+  --border: #1f2a44;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --accent: #facc15;
+
+  --cell-empty: #16213a;
+  --cell-line: #0b1120;
+  --cell-wall: #475569;
+  --cell-weight: #7c4a1e;
+  --cell-start: #22c55e;
+  --cell-end: #ef4444;
+  --cell-visited: #1d4ed8;
+  --cell-path: #facc15;
+
+  --cell-size: clamp(14px, calc((100vw - 48px) / var(--cols, 45)), 26px);
+
+  color-scheme: dark;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ---------- Header & toolbar ---------- */
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.header__title h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  letter-spacing: -0.02em;
+}
+
+.header__title p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn {
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 120ms, border-color 120ms;
+}
+
+.btn:hover {
+  border-color: var(--muted);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- Legend ---------- */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.legend__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend .legend__swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+}
+
+/* ---------- Grid ---------- */
+.board {
+  overflow-x: auto;
+  padding: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.grid {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--cell-line);
+  border: 1px solid var(--cell-line);
+  user-select: none;
+  touch-action: none;
+}
+
+.grid__row {
+  display: flex;
+  gap: 1px;
+}
+
+.cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  background: var(--cell-empty);
+}
+
+.cell--wall {
+  background: var(--cell-wall);
+}
+
+.cell--weight {
+  background: var(--cell-weight);
+  background-image: radial-gradient(circle, rgb(255 255 255 / 0.25) 18%, transparent 20%);
+}
+
+.cell--start {
+  background: var(--cell-start);
+  cursor: grab;
+}
+
+.cell--end {
+  background: var(--cell-end);
+  cursor: grab;
+}
+
+/* Applied by the animator in Phase 5 */
+.cell--visited {
+  background: var(--cell-visited);
+}
+
+.cell--path {
+  background: var(--cell-path);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
