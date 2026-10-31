@@ -4,6 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "description": "Interactive grid that visualizes BFS and Dijkstra's shortest-path algorithms step by step.",
+  "engines": {
+    "node": ">=20.19"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",

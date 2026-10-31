@@ -2,12 +2,24 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Draw walls, place weights and watch BFS and Dijkstra find the shortest path." />
     <title>Pathfinding Visualizer</title>
+    <meta
+      name="description"
+      content="Draw walls and weights, then watch Breadth-First Search and Dijkstra's algorithm find a path step by step, and compare them side by side."
+    />
+    <meta name="theme-color" content="#0b1120" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Pathfinding Visualizer" />
+    <meta
+      property="og:description"
+      content="Watch BFS and Dijkstra search a grid step by step, and compare them side by side."
+    />
   </head>
   <body>
+    <noscript>This app needs JavaScript to run.</noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

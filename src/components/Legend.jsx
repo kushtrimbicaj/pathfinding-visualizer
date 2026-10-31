@@ -6,7 +6,8 @@ const ITEMS = [
   { className: 'cell--wall', label: 'Wall' },
   { className: 'cell--weight', label: `Weight (cost ${HEAVY_WEIGHT})` },
   { className: 'cell--visited', label: 'Visited' },
-  { className: 'cell--path', label: 'Shortest path' },
+  { className: 'cell--path', label: 'Path' },
+  { className: 'cell--path-alt', label: 'BFS path (Run both)' },
 ];
 
 export default function Legend() {
