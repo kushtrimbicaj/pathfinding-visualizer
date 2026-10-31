@@ -2,7 +2,7 @@
 
 An interactive grid where you draw walls and weighted cells, then watch **Breadth-First Search** and **Dijkstra's algorithm** find a path between two points, step by step.
 
-> 🚧 In progress. Phase 2 of 6 is complete (grid editing).
+> 🚧 In progress. Phase 3 of 6 is complete (BFS).
 
 ## Controls
 
@@ -53,13 +53,16 @@ tests/          unit tests
 - **Deterministic neighbour order** (up, right, down, left). The same board always animates the same way.
 - **Event delegation with Pointer Events.** One set of handlers on the grid instead of ~1,000 per-cell handlers. Works with mouse, touch and pen.
 - **Gap-free strokes.** Pointer events fire at a limited rate, so a fast drag can skip cells. Bresenham's line algorithm fills in every cell between two events.
+- **One result shape for every algorithm.** Each algorithm is a pure function `(grid, start, end) → { found, visitedInOrder, path, steps, cost }`. The renderer and stats never need to know which algorithm ran.
+- **O(1) queue for BFS.** An array with a head index instead of `Array.shift()`, which re-indexes the whole array on every call and makes BFS quadratic.
+- **Visualization outside React.** Visited and path colours are CSS classes toggled directly on cell elements, so showing a result never re-renders the ~1,000 cells.
 - **Pure editing logic.** Brush rules (draw vs erase, walls replacing weights, protecting start/end) live in `src/grid/editing.js` and are unit-tested without a browser.
 
 ## Roadmap
 
 1. ✅ Grid model and rendering
 2. ✅ Wall and weight drawing, start/end dragging, clear actions
-3. ⬜ BFS and path reconstruction
+3. ✅ BFS and path reconstruction
 4. ⬜ Binary min-heap and Dijkstra
 5. ⬜ Step-by-step animation with adjustable speed
 6. ⬜ Algorithm comparison stats, maze generation, deploy

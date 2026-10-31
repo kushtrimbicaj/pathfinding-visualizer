@@ -1,15 +1,22 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Grid from './components/Grid.jsx';
 import Legend from './components/Legend.jsx';
+import ResultSummary from './components/ResultSummary.jsx';
+import RunControls from './components/RunControls.jsx';
 import Toolbar from './components/Toolbar.jsx';
 import { useGrid } from './hooks/useGrid.js';
 import { useMouseDrawing } from './hooks/useMouseDrawing.js';
 import { BRUSH } from './grid/editing.js';
+import { ALGORITHMS, getAlgorithm } from './algorithms/index.js';
+import { clearVisualization, paintInstant } from './animation/paint.js';
 
 export default function App() {
   const { grid, setGrid, start, setStart, end, setEnd, resetBoard, removeWalls, removeWeights } =
     useGrid();
   const [brush, setBrush] = useState(BRUSH.WALL);
+  const [algorithmId, setAlgorithmId] = useState(ALGORITHMS[0].id);
+  // Last run: { algorithm, result } or null.
+  const [run, setRun] = useState(null);
 
   // Becomes true while an algorithm animates (Phase 5).
   const locked = false;
@@ -24,6 +31,24 @@ export default function App() {
     setStart,
     setEnd,
   });
+
+  // Any edit to the board makes the shown result stale, so wipe it.
+  useEffect(() => {
+    clearVisualization();
+    setRun(null);
+  }, [grid, start, end]);
+
+  const visualize = useCallback(() => {
+    const algorithm = getAlgorithm(algorithmId);
+    const result = algorithm.run(grid, start, end);
+    paintInstant(result);
+    setRun({ algorithm, result });
+  }, [algorithmId, grid, start, end]);
+
+  const clearPath = useCallback(() => {
+    clearVisualization();
+    setRun(null);
+  }, []);
 
   return (
     <div className="app">
@@ -41,6 +66,17 @@ export default function App() {
           disabled={locked}
         />
       </header>
+
+      <section className="panel">
+        <RunControls
+          algorithmId={algorithmId}
+          onAlgorithmChange={setAlgorithmId}
+          onVisualize={visualize}
+          onClearPath={clearPath}
+          disabled={locked}
+        />
+        <ResultSummary run={run} />
+      </section>
 
       <Legend />
 
